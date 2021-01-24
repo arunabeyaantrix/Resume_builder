@@ -1,0 +1,1 @@
+export const SAVE_EDU_DATA = "SAVE_EDU_DATA";

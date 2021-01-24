@@ -30,6 +30,7 @@ class Home extends Component {
         },
         address:[],
         projects:[],
+        educational_details:[]
     }
 
 
@@ -180,18 +181,23 @@ class Home extends Component {
     };
 
     componentWillReceiveProps(newProps){
-        let {projects,address} = this.state;
+        let {projects,address,educational_details} = this.state;
         let temp_proj = [...projects];
         let temp_addr = [...address];
+        let temp_edu = [...educational_details]
         if(newProps.projectReducer.getProductData === true){
             temp_proj.push(newProps.projectReducer.passFilter)
         }
         if(newProps.address.getAddressData === true){
             temp_addr.push(newProps.address.passFilter)
         }
+        if(newProps.educational.getEduData === true){
+            temp_edu.push(newProps.educational.passFilter)
+        }
         this.setState({
             address:temp_addr,
             projects:temp_proj,
+            educational_details:temp_edu,
         })
 
     }
@@ -203,6 +209,7 @@ class Home extends Component {
 
         console.log("this address", this.state.address);
         console.log("this proj", this.state.projects);
+        console.log("this edu detail", this.state.educational_details);
 
         return (
             <React.Fragment>
@@ -378,6 +385,7 @@ function mapStateToProps(state) {
     return {
         projectReducer:state.projectReducer,
         address: state.address,
+        educational:state.educational,
     };
 }
 
