@@ -27,7 +27,9 @@ class Home extends Component {
             first_name:"",
             last_name:"",
             objective:"",
-        }
+        },
+        address:[],
+        projects:[],
     }
 
 
@@ -40,6 +42,8 @@ class Home extends Component {
     }
      onHideModal = () => {
         this.setState({visible:false})
+        let {address} = this.props;
+        console.log(address);
     }
     onHideModal2 = () => {
         this.setState({visible2:false})
@@ -175,15 +179,31 @@ class Home extends Component {
         );
     };
 
-    componentDidMount(){
-        // let {projectData} = this.props.projectReducer;
-        // console.log(projectData);
+    componentWillReceiveProps(newProps){
+        let {projects,address} = this.state;
+        let temp_proj = [...projects];
+        let temp_addr = [...address];
+        if(newProps.projectReducer.getProductData === true){
+            temp_proj.push(newProps.projectReducer.passFilter)
+        }
+        if(newProps.address.getAddressData === true){
+            temp_addr.push(newProps.address.passFilter)
+        }
+        this.setState({
+            address:temp_addr,
+            projects:temp_proj,
+        })
+
     }
 
     render(){
         const { tags,tags2,visible, visible2,visible3,visible4,postData, inputValue,inputValue2 } = this.state;
         const tagChild = tags.map(this.forMap);
         const tagChild2 = tags2.map(this.forMap2);
+
+        console.log("this address", this.state.address);
+        console.log("this proj", this.state.projects);
+
         return (
             <React.Fragment>
                 <div className="container">
@@ -258,7 +278,15 @@ class Home extends Component {
                                 <div>
                                     <div class="form-group" style={{display:"grid", gridTemplateColumns:"170px 1fr"}}>
                                         <label for="last_name" className="labelClass">Last Name:</label>
-                                        <input type="text" class="form-control" id="last_name" aria-describedby="last_name" placeholder="Last Name"/>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="last_name" 
+                                            aria-describedby="last_name" 
+                                            placeholder="Last Name"
+                                            value={postData.last_name}
+                                            onChange={(e) => this.updatevalTostate(e.target.value, "last_name")}
+                                        />
                                     </div>
                                     <div class="form-group" style={{display:"grid", gridTemplateColumns:"170px 1fr"}}>
                                         <label for="last_name" className="labelClass">Educational Details:</label>
@@ -348,7 +376,8 @@ class Home extends Component {
 
 function mapStateToProps(state) {
     return {
-        projectReducer:state.projectReducer
+        projectReducer:state.projectReducer,
+        address: state.address,
     };
 }
 
