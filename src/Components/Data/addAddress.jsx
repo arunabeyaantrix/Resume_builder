@@ -13,9 +13,6 @@ function AddAddress(props) {
     const [postData, setPostData] = useState({
         address1:"",
         address2:"",
-        mobile_number:"",
-        email:"",
-        city:"",
         district:"",
         state:"",
         country:"",
@@ -76,32 +73,6 @@ function AddAddress(props) {
                         placeholder="Address Line 2"
                         value={postData.address2}
                         onChange={(e) => updatevalTostate(e.target.value,"address2")}
-                    />
-                </div>
-                <div class="form-group">
-                    <label for="phone_number" className="labelClass">Mobile Number:</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        id="phone_number" 
-                        aria-describedby="phone_number" 
-                        placeholder="Mobile Number"
-                        value={postData.mobile_number}
-                        onChange={(e) => updatevalTostate(e.target.value,"mobile_number")}
-                        
-                    />
-                </div>
-                <div class="form-group">
-                    <label for="email" className="labelClass">Email Address:</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        id="email" 
-                        aria-describedby="email" 
-                        placeholder="Email Address"
-                        value={postData.email}
-                        onChange={(e) => updatevalTostate(e.target.value,"email")}
-                        
                     />
                 </div>
                 <div class="form-group">

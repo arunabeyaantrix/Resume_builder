@@ -35,92 +35,129 @@ class Home extends Component {
             first_name:"",
             last_name:"",
             objective:"",
+            designation:"",
+            email:"",
+            mobile_number:"",
         },
         address:[],
         projects:[],
         educational_details:[],
         certificates:[],
     }
+    textSplit (N,string) {
+        var app=string.split(' '),
+            arrayApp=[],
+            stringApp="";
+        app.forEach(function(sentence,index){
+          stringApp+=sentence+' ';
+          
+          if((index+1)%N===0){
+            arrayApp.push(stringApp);
+            stringApp='';
+          }else if(app.length===index+1 && stringApp!==''){
+            arrayApp.push(stringApp);
+            stringApp='';
+          }
+        });
+        return arrayApp;
+        
+    };
     
     generatePDf() {
+        let {postData,address} = this.state;
+
+        let jjj = []
+        let kkk = {
+            address1:"Roduvila Veedu,Pallimon",
+            address2:"Pallimon P.O, Kannanaloor",
+            district: "Kollam",
+            state:"Kerala",
+            country:"India",
+            pincode:"691576"
+        }
+        jjj.push(kkk)
+
+        // let name = postData.first_name + postData.last_name;
+        let name = "Arun Dev";
+        let objective = postData.objective;
+        // let designation = postData.designation;
+        let designation = "Computer Science Engineer"
+        // let email = postData.email;
+        let email = "arununni038@gmail.com"
+        let mobile_number = 9400292964;
+        // let temp_address = address[0];
+        let temp_address = jjj[0];
+
+        console.log("address is",temp_address);
+        let location = temp_address.district + ", " + temp_address.state
+        let country = temp_address.country + ", " + temp_address.pincode
+
+        
+
         const doc = new jsPDF("p", "pt", "letter");
         doc.addFont("fonts/times-new-roman.ttf", "times-new-roman", "normal");
+        doc.addFont("fonts/Oswald-VariableFont_wght.ttf","Oswald-VariableFont_wght", "normal")
         // doc.addFont("Montserrat");
-        doc.setFont("times-new-roman");
+        // doc.setFont("times-new-roman");
+        doc.setFont("Oswald-VariableFont_wght");
+
+        var splitadd =`Upcoming graduate pursuing Civil Engineering from APJ Abdul Kalam Kerala Technological University. Backed by successful internship and knowledge of engineering theories, specifications and standard. Developed an interest in the appplications of GIS and remote sensing Technologies in Geotechnical Engineering as well as Engineering Geology and want to explore more on the same.`
+
+        let lines = doc.splitTextToSize(splitadd, 300, 100)
+
+
         // doc.addImage("images/logos/en/logo.png", "JPEG", 40, 40, 150, 30);
-        var splitadd = doc.splitTextToSize(
-            `Office 602
-            Emirates Islamic Bank Building (Golden Building)
-            22nd Rd - DeiraAl Sabkha - Dubai
-            Nearest metro station : Baniyas square MS",180
-            Support@splyr.com | +971 4 777 5000`
-        );
 
         // var bottomText =  doc.splitTextToSize(`This is an auto-generated invoice from Splyr.com. If you have any queries  with regards to this invoice, please get in \ntouch with Splyr team by mail at support@splyr.com or by phone at +97147775000.`);
         doc.setFontSize(10);
-        doc.text(splitadd, 563, 40, {
-            align: "right",
-            
-        });
+        
         doc.setFontSize(11);
-        doc.setDrawColor(40, 37, 100);
+        doc.setDrawColor(179, 180, 181);
         doc.setLineWidth(2);
-        doc.line(40, 110, 563, 110);
+        doc.line(30, 155, 580, 155);
+
+        // vertical line
+        doc.setDrawColor(72, 119, 240);
+        doc.line(300, 160, 300, 750);
+        doc.setTextColor(0,0,0);
+        doc.setFontSize(21);
+        doc.text(`${name}`,30,40, { align: "left"});
+        doc.setTextColor(45, 128, 252);
+        doc.setFontSize(15);
+        doc.text(`${designation}`,30,60, { align: "left"});
+        doc.setFontSize(11);
+        doc.setTextColor(0,0,0);
+        doc.text(`Address: ${temp_address.address1}`, 30,80,{align:"left"});
+        doc.text(`${temp_address.address2}`, 30,95,{align:"left"});
+        doc.text(`${location}, ${country}`, 30,110,{align:"left"});
+        doc.text(`Contact Number: ${mobile_number}`, 30,130,{align:"left"});
+        doc.text(`Email Address: ${email}`, 30,145,{align:"left"});
+        
+
+        doc.setTextColor(45, 128, 252);
+        doc.setFontSize(18);
+        doc.text("OBJECTIVE", 30, 190,{align:"left"})
+
+        
         doc.setFontSize(12);
-        // doc.setFont("Montserrat", 'bold');
-        // doc.setFont("Montserrat-Bold");
-        // doc.text(`Invoiced to,`, 40, 145, { align: "left"});
+        doc.setTextColor(0,0,0);
+        doc.setFont("times-new-roman");
+
         
-        // doc.setFont("Montserrat");
-        // doc.setFontSize(11);
-        // doc.text(`${fullName},`, 40, 160, { align: "left",fontSize:"12px"});
-        // doc.text(`${address} ${townCity}`, 40, 175, { align: "left" });
-        // doc.text(`${stateName}, ${countryName}`, 40, 190, { align: "left" });
-        // doc.text(`Tel : ${mobileNumber}`, 40, 205, { align: "left" });
-        // doc.text(`Order Number: ${orderNo}`, 563, 145, { align: "right" });
-        // doc.text(`Order Placed Date & Time: ${moment(orderData.create_date).format("DD MMM, YYYY hh:mm A")}`, 563, 160, { align: "right" });
-        // doc.setFontSize(9);
-        // doc.setTextColor(146, 148, 150);
-        // doc.text(bottomText, 40, 730, {
-        //     align: "left",
-        // });
-        
-        // let headers = this.createpdfTableHead();
-        // let gDAta = this.generateData(orderData);
+        // doc.text(`${lines}`,35,195,{align:"left"})
+        doc.text(35, 210, lines,{align:"left"})
+            
 
-        // console.log("headers is here", headers);
-        // console.log("gdata is ahdfha", gDAta);
 
-        // doc.autoTable(headers, gDAta, {
-        //     startY: 235,
-        //     showHead: "firstPage",
-        //     columnStyles: {
-        //         0: { cellWidth: 197 },
-        //         1: { cellWidth: 90 },
-        //         2: { cellWidth: 70 },
-        //         3: { cellWidth: 68 },
-        //         4: { cellWidth: 100 },
-        //     },
 
-        //     theme: "plain",
-        //     headStyles: {
-        //         fillColor: [247, 247, 247],
-        //         fontSize: 11,
-        //     },
-        //     alternateRowStyles: {
-        //         fillColor: [255, 255, 255],
-        //         fontSize: 10,
-        //         textColor: [102, 102, 102],
-        //     },
-        //     bodyStyles: {
-        //         fillColor: [247, 247, 247],
-        //         textColor: [102, 102, 102],
-        //         fontSize: 10,
-        //     },
-        //     styles: {font: "Montserrat"},
-        // });
+        // doc.save(`Invoice_${Date.now()}.pdf`);
 
-        doc.save(`Invoice_${Date.now()}.pdf`);
+        var string = doc.output('datauristring');
+        var embed = "<embed width='100%' height='100%' src='" + string + "'/>"
+        var x = window.open();
+        x.document.open();
+        x.document.write(embed);
+        x.document.close();
         
     }
 
@@ -339,6 +376,45 @@ class Home extends Component {
                                                 placeholder="Last Name"
                                                 value={postData.last_name}
                                                 onChange={(e) => this.updatevalTostate(e.target.value, "last_name")}
+                                            />
+                                        </div>
+
+                                        <div class="form-group" style={{display:"grid", gridTemplateColumns:"120px 1fr"}}>
+                                            <label for="email" className="labelClass">Email:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="email" 
+                                                aria-describedby="email" 
+                                                placeholder="Email"
+                                                value={postData.email}
+                                                onChange={(e) => this.updatevalTostate(e.target.value, "email")}
+                                            />
+                                        </div>
+
+                                        <div class="form-group" style={{display:"grid", gridTemplateColumns:"120px 1fr"}}>
+                                            <label for="mobile_number" className="labelClass">Mobile Number:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="mobile_number" 
+                                                aria-describedby="mobile_number" 
+                                                placeholder="Mobile Number"
+                                                value={postData.mobile_number}
+                                                onChange={(e) => this.updatevalTostate(e.target.value, "mobile_number")}
+                                            />
+                                        </div>
+
+                                        <div class="form-group" style={{display:"grid", gridTemplateColumns:"120px 1fr"}}>
+                                            <label for="designation" className="labelClass">Designation:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="designation" 
+                                                aria-describedby="designation" 
+                                                placeholder="eg. CIVIL ENGINEER" 
+                                                value={postData.designation}
+                                                onChange={(e) => this.updatevalTostate(e.target.value, "designation")}
                                             />
                                         </div>
 
