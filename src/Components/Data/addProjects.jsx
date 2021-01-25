@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useDispatch } from "react-redux";
-import "../style.css";
+import "../style.scss";
 import {Modal,Input} from "antd";
 import "antd/dist/antd.css";
 import * as actions from "../../store/projects"

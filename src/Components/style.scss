@@ -1,8 +1,13 @@
 .mainRenderGrid{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    .ant-card-bordered{
+        border-radius: 10px;
+    }
 }
 .labelClass{
     position: relative;
     top: 5px;
 }
+
